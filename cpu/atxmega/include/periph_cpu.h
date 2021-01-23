@@ -239,6 +239,108 @@ typedef struct {
     cpu_int_lvl_t int_lvl[TIMER_CH_MAX_NUMOF];  /**< Interrupt channels level */
 } timer_conf_t;
 
+/**
+ * @brief   EBI (External Bus Interface)
+ * {@
+ */
+typedef enum {
+    EBI_LPC_MODE_ALE1       = 0x01,     /**< Enable ALE 1 */
+    EBI_LPC_MODE_ALE12      = 0x03,     /**< Enable ALE 1 & 2 */
+} ebi_lpc_mode_t;
+
+typedef enum {
+    EBI_PORT_3PORT          = 0x01,     /**< Three Port Config */
+    EBI_PORT_SDRAM          = 0x02,     /**< SDRAM Port Config */
+    EBI_PORT_SRAM           = 0x04,     /**< SRAM Port Config */
+    EBI_PORT_LPC            = 0x08,     /**< Low Pin Count Port Config */
+    EBI_PORT_CS0            = 0x10,     /**< Chip Select 0 Config */
+    EBI_PORT_CS1            = 0x20,     /**< Chip Select 1 Config */
+    EBI_PORT_CS2            = 0x40,     /**< Chip Select 2 Config */
+    EBI_PORT_CS3            = 0x80,     /**< Chip Select 3 Config */
+    EBI_PORT_CS_ALL         = 0xF0,     /**< Chip Select 0-3 Config */
+} ebi_port_mask_t;
+
+typedef enum {
+    EBI_SDRAM_CAS_LAT_2CLK  = 0x00,     /**< 2 Clk PER2 cycles delay */
+    EBI_SDRAM_CAS_LAT_3CLK  = 0x01,     /**< 3 Clk PER2 cycles delay */
+} ebi_sdram_cas_latency_t;
+
+typedef enum {
+    EBI_SDRAM_ROW_BITS_11  = 0x00,     /**< 11 row bits */
+    EBI_SDRAM_ROW_BITS_12  = 0x01,     /**< 12 row bits */
+} ebi_sdram_row_bits_t;
+
+/**
+ * @brief   EBI maximum Chip Select
+ */
+#define PERIPH_EBI_MAX_CS   (4)
+
+/**
+ * @brief   EBI SDRAM Chip Select
+ */
+#define PERIPH_EBI_SDRAM_CS (3)
+
+typedef uint32_t hugemem_ptr_t;
+
+#define HUGEMEM_NULL        0
+
+/**
+ * @brief   EBI Chip Select configuration structure
+ */
+typedef struct {
+    EBI_CS_MODE_t   mode;               /**< Chip Select address mode */
+#if defined (__AVR_ATxmega64A1U__) || defined (__AVR_ATxmega128A1U__)
+    EBI_CS_ASPACE_t space;              /**< Chip Select adress space */
+#else
+    EBI_CS_ASIZE_t  space;              /**< Chip Select adress space */
+#endif
+    EBI_CS_SRWS_t   wait;               /**< SRAM Wait State Selection */
+    uint32_t        address;            /**< Chip Select Base Address */
+} ebi_cs_t;
+
+/**
+ * @brief   EBI SDRAM configuration structure
+ */
+typedef struct {
+    uint8_t refresh;                     /**< Self-Refresh Enabled */
+    uint16_t refresh_period;             /**< microseconds */
+    uint16_t init_dly;                   /**< microseconds */
+    EBI_CS_SDMODE_t mode;                /**< Access Mode */
+    ebi_sdram_cas_latency_t cas_latency; /**< CAS Latency */
+    ebi_sdram_row_bits_t row_bits;       /**< ROW bits */
+    EBI_SDCOL_t column_bits;             /**< COLUMN bits */
+    EBI_MRDLY_t ld_mode_dly;             /**< Number of Clk PER2 cycles */
+    EBI_ROWCYCDLY_t row_cycle_dly;       /**< Number of Clk PER2 cycles */
+    EBI_RPDLY_t row_prechage_dly;        /**< Number of Clk PER2 cycles */
+    EBI_WRDLY_t write_recovery_dly;      /**< Number of Clk PER2 cycles */
+    EBI_ESRDLY_t exit_self_rfsh_dly;     /**< Number of Clk PER2 cycles */
+    EBI_ROWCOLDLY_t row_to_column_dly;   /**< Number of Clk PER2 cycles */
+} ebi_sd_t;
+
+/**
+ * @brief   EBI configuration structure
+ *
+ * This is a mandatory configuration. Whowever, to complete disable module
+ * just configure it as:
+ *
+ * static const ebi_conf_t ebi_config = { 0 };
+ *
+ * or, for a temporary disable, set addr_bits to 0 at periph_conf.h:
+ *
+ * .addr_bits = 0,
+ *
+ */
+typedef struct {
+    uint8_t addr_bits;                  /**< EBI port address lines */
+    ebi_port_mask_t flags;              /**< EBI port flags */
+    uint8_t sram_ale;                   /**< Number of ALE for SRAM mode */
+    uint8_t lpc_ale;                    /**< Number of ALE for LPC mode */
+    ebi_sd_t sdram;                     /**< SDRAM configuration */
+    ebi_cs_t cs[PERIPH_EBI_MAX_CS];     /**< Chip Select configuration */
+    uint16_t stack_size;                /**< Max 0xFFFF addressable value */
+} ebi_conf_t;
+/** @} */
+
 #ifdef __cplusplus
 }
 #endif
