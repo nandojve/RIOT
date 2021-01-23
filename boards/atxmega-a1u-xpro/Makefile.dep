@@ -1,4 +1,5 @@
 USEMODULE += boards_common_atxmega
+USEMODULE += periph_ebi
 
 ifneq (,$(filter saul_default,$(USEMODULE)))
   USEMODULE += saul_gpio

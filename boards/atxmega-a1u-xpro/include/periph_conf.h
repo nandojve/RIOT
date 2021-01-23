@@ -89,6 +89,45 @@ static const uart_conf_t uart_config[] = {
 #define UART_NUMOF        ARRAY_SIZE(uart_config)
 /** @} */
 
+/**
+ * @name EBI configuration
+ * @{
+ */
+static const ebi_conf_t ebi_config = {
+    .addr_bits              = 19,
+    .flags                  = (EBI_PORT_LPC | EBI_PORT_CS2),
+    .sram_ale               = 0,
+    .lpc_ale                = 2,
+    .sdram                  = { 0 },
+    .cs                     = { { EBI_CS_MODE_LPC_gc,
+                                  EBI_CS_ASPACE_512KB_gc,
+                                  EBI_CS_SRWS_1CLK_gc,
+                                  0x0UL,
+                                },
+                                { EBI_CS_MODE_DISABLED_gc,
+                                  0,
+                                  EBI_CS_SRWS_0CLK_gc,
+                                  0x0UL,
+                                },
+                                { EBI_CS_MODE_DISABLED_gc,
+                                  0,
+                                  EBI_CS_SRWS_0CLK_gc,
+                                  0x0UL,
+                                },
+                                { EBI_CS_MODE_DISABLED_gc,
+                                  0,
+                                  EBI_CS_SRWS_0CLK_gc,
+                                  0x0UL,
+                                },
+                              },
+    .stack_size             = 0xffff,
+    /**
+     * Make sure you tell to compiler that heap_end at 0x800000 + stack_size as
+     * "LDSCRIPT_EXTRA = -Wl,--defsym=__heap_end=0x80FFFF" at Makefile.include
+     */
+};
+/** @} */
+
 #ifdef __cplusplus
 }
 #endif
