@@ -80,8 +80,8 @@ void __attribute__((weak)) avr8_clk_init(void)
      */
     OSC.PLLCTRL = 0;
 
-    /* Enable the internal PLL & 32MHz & 32KHz oscillators */
-    OSC.CTRL |= OSC_PLLEN_bm | OSC_RC32MEN_bm | OSC_RC32KEN_bm;
+    /* Enable the internal 32MHz & 32KHz oscillators */
+    OSC.CTRL = OSC_RC32MEN_bm | OSC_RC32KEN_bm;
 
     /* Wait for 32Khz and 32MHz oscillator to stabilize */
     while ((OSC.STATUS & (OSC_RC32KRDY_bm | OSC_RC32MRDY_bm))

@@ -20,6 +20,7 @@
 #define PERIPH_CPU_H
 
 #include <avr/io.h>
+#include <usb.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -263,6 +264,20 @@ typedef struct {
     timer_type_t type;                          /**< Timer Type */
     cpu_int_lvl_t int_lvl[TIMER_CH_MAX_NUMOF];  /**< Interrupt channels level */
 } timer_conf_t;
+
+/**
+ * @brief USB peripheral parameters
+ *
+ * @{
+ */
+typedef struct {
+    USB_t *dev;             /**< PTR to the device registers */
+    pwr_reduction_t pwr;    /**< Power Management */
+    usb_speed_t speed;      /**< Set USB speed */
+    uint8_t sof;            /**< Enable Start of Frame event */
+    cpu_int_lvl_t int_lvl;  /**< USB Interrupt Level */
+} usb_config_t;
+/** @} */
 
 #ifdef __cplusplus
 }

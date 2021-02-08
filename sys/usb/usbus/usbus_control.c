@@ -255,8 +255,8 @@ static void _recv_setup(usbus_t *usbus, usbus_control_handler_t *handler)
 {
     usb_setup_t *pkt = &handler->setup;
 
-    DEBUG("usbus_control: Received setup %x %x @ %d\n", pkt->type,
-          pkt->request, pkt->length);
+    DEBUG("usbus_control: Received setup %x %x @ %d %04x\n", pkt->type,
+          pkt->request, pkt->length, pkt->value);
 
     uint8_t destination = pkt->type & USB_SETUP_REQUEST_RECIPIENT_MASK;
     int res = 0;
@@ -340,6 +340,10 @@ static int _handle_tr_complete(usbus_t *usbus,
                                usbus_control_handler_t *ep0_handler,
                                usbdev_ep_t *ep)
 {
+    DEBUG("usbus_control: sts: %d, dir: %d\n",
+        ep0_handler->control_request_state,
+        ep->dir);
+
     switch (ep0_handler->control_request_state) {
         case USBUS_CONTROL_REQUEST_STATE_INACK:
             if (ep->dir == USB_EP_DIR_IN) {

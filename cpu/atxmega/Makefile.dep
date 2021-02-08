@@ -8,4 +8,8 @@ ifeq (,$(filter cpuid,$(USEMODULE)))
   USEMODULE += periph_nvm
 endif
 
+ifeq (,$(filter periph_usbdev,$(USEMODULE)))
+  USEMODULE += periph_nvm periph_clock
+endif
+
 include $(RIOTCPU)/avr8_common/Makefile.dep

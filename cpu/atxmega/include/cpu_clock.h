@@ -25,6 +25,7 @@
 #define CPU_CLOCK_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,6 +67,10 @@ static inline void atxmega_set_prescaler(uint8_t clk_scale, uint8_t bus_scale)
      */
     _PROTECTED_WRITE(CLK.PSCTRL, clk_scale | bus_scale);
 }
+/**
+ * @brief   Initializes system clock prescaler
+ */
+void atxmega_clk_usb_enable(bool is_full_speed);
 
 #ifdef __cplusplus
 }

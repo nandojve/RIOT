@@ -92,6 +92,19 @@ static const uart_conf_t uart_config[] = {
 #define UART_NUMOF        ARRAY_SIZE(uart_config)
 /** @} */
 
+/**
+ * @name USB configuration
+ * @{
+ */
+static const usb_config_t usb_config = {
+    .dev                    = &USB,
+    .pwr                    = PWR_RED_REG(PWR_GENERAL_POWER, PR_USB_bm),
+    .speed                  = USB_SPEED_FULL,
+    .sof                    = 0,
+    .int_lvl                = CPU_INT_LVL_LOW,
+};
+/** @} */
+
 #ifdef __cplusplus
 }
 #endif
