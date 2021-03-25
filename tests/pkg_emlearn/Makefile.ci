@@ -6,7 +6,6 @@ BOARD_INSUFFICIENT_MEMORY := \
     atmega1284p \
     atmega328p \
     atmega328p-xplained-mini \
-    atxmega-a1u-xpro \
     blackpill \
     bluepill \
     derfmega128 \
