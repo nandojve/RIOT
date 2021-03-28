@@ -243,11 +243,20 @@ typedef struct {
  * @brief   EBI (External Bus Interface)
  * {@
  */
+
+/**
+ * @brief   EBI Low Pin Count (LPC) Mode ALE config
+ */
 typedef enum {
-    EBI_LPC_MODE_ALE1       = 0x01,     /**< Enable ALE 1 */
-    EBI_LPC_MODE_ALE12      = 0x03,     /**< Enable ALE 1 & 2 */
+    EBI_LPC_MODE_ALE1       = 0x01,     /**< Data multiplexed with Address byte 0 */
+    EBI_LPC_MODE_ALE12      = 0x03,     /**< Data multiplexed with Address byte 0 and 1 */
 } ebi_lpc_mode_t;
 
+/**
+ * @brief   EBI Port Access Flags
+ *
+ * Indicate what should be configured
+ */
 typedef enum {
     EBI_PORT_3PORT          = 0x01,     /**< Three Port Config */
     EBI_PORT_SDRAM          = 0x02,     /**< SDRAM Port Config */
@@ -260,11 +269,17 @@ typedef enum {
     EBI_PORT_CS_ALL         = 0xF0,     /**< Chip Select 0-3 Config */
 } ebi_port_mask_t;
 
+/**
+ * @brief   SDRAM Column Address Strobe latency
+ */
 typedef enum {
     EBI_SDRAM_CAS_LAT_2CLK  = 0x00,     /**< 2 Clk PER2 cycles delay */
     EBI_SDRAM_CAS_LAT_3CLK  = 0x01,     /**< 3 Clk PER2 cycles delay */
 } ebi_sdram_cas_latency_t;
 
+/**
+ * @brief   SDRAM number of Row Bits
+ */
 typedef enum {
     EBI_SDRAM_ROW_BITS_11  = 0x00,     /**< 11 row bits */
     EBI_SDRAM_ROW_BITS_12  = 0x01,     /**< 12 row bits */
@@ -280,19 +295,15 @@ typedef enum {
  */
 #define PERIPH_EBI_SDRAM_CS (3)
 
-typedef uint32_t hugemem_ptr_t;
-
-#define HUGEMEM_NULL        0
-
 /**
  * @brief   EBI Chip Select configuration structure
  */
 typedef struct {
     EBI_CS_MODE_t   mode;               /**< Chip Select address mode */
 #if defined (__AVR_ATxmega64A1U__) || defined (__AVR_ATxmega128A1U__)
-    EBI_CS_ASPACE_t space;              /**< Chip Select adress space */
+    EBI_CS_ASPACE_t space;              /**< Chip Select address space */
 #else
-    EBI_CS_ASIZE_t  space;              /**< Chip Select adress space */
+    EBI_CS_ASIZE_t  space;              /**< Chip Select address space */
 #endif
     EBI_CS_SRWS_t   wait;               /**< SRAM Wait State Selection */
     uint32_t        address;            /**< Chip Select Base Address */

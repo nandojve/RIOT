@@ -25,6 +25,10 @@
 extern "C" {
 #endif
 
+typedef uint32_t hugemem_ptr_t;
+
+#define HUGEMEM_NULL        0
+
 void ebi_init(void);
 
 static inline uint_fast8_t hugemem_read8(const hugemem_ptr_t from)

@@ -43,8 +43,6 @@ void ebi_init(void)
     uint8_t mode;
     uint8_t sd_ctrl = 0;
     uint8_t i;
-    uint8_t port_mask;
-    uint8_t ale_mask;
 
     /*
      * This is a mandatory configuration. Whowever, to complete disable module
@@ -71,7 +69,8 @@ void ebi_init(void)
         PORTJ.DIR = 0xf0;
         PORTK.DIR = 0xff;
     } else {
-        ale_mask = ebi_config.sram_ale | ebi_config.lpc_ale;
+        uint8_t ale_mask = ebi_config.sram_ale | ebi_config.lpc_ale;
+        uint8_t port_mask;
 
         /*
          * Set PORTH initial state, set WE and CAS/RE high by default.
@@ -118,7 +117,7 @@ void ebi_init(void)
 
         /*
          * PORTJ is always used for data, direction and value is controlled by
-	 * the EBI module.
+         * the EBI module.
          */
 
         /* PORTK is only used in 3-port mode */
@@ -128,20 +127,20 @@ void ebi_init(void)
             if (ebi_config.flags & EBI_PORT_SRAM) {
                 /*
                  * Bits 0..7 go here, so if we have 8 lines or more, enable all
-	         * lines. Otherwise, enable as many as we need.
+                 * lines. Otherwise, enable as many as we need.
                  */
                 if (ebi_config.addr_bits < 8) {
                     port_mask = (1 << ebi_config.addr_bits) - 1;
                 }
-	        else {
+                else {
                     port_mask = 0xff;
                 }
             }
-	    else {
+            else {
                 /*
                  * Bits 8..15 go here, so if we have less than 16 address lines,
-	         * disable the ones that we don't need. If we have 8 lines or
-	         * less, disable all address lines on this port.
+                 * disable the ones that we don't need. If we have 8 lines or
+                 * less, disable all address lines on this port.
                  */
                 if (ebi_config.addr_bits <= 8) {
                     port_mask = 0x00;
@@ -149,7 +148,7 @@ void ebi_init(void)
                 else if (ebi_config.addr_bits < 16) {
                     port_mask = (1 << (ebi_config.addr_bits - 8)) - 1;
                 }
-		else {
+                else {
                     port_mask = 0xff;
                 }
             }
@@ -212,7 +211,7 @@ void ebi_init(void)
 
             /* Configure */
             cs[i].CTRLA    = ebi_config.cs[i].space;
-	    cs[i].CTRLB    = ebi_config.cs[i].wait;
+            cs[i].CTRLB    = ebi_config.cs[i].wait;
             cs[i].BASEADDR = ((ebi_config.cs[i].address >> 8) & 0xfff0);
 
             /* Enable */
