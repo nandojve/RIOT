@@ -45,6 +45,61 @@ typedef enum {
 /** @} */
 
 /**
+ * @name   CPU Clocks and Oscilators configuration
+ * @{
+ */
+
+/**
+ * @brief  CPU Clock/Oscilator configuration Enable/Disable
+ */
+typedef enum {
+    CPU_CLK_OFF,
+    CPU_CLK_EN,
+} cpu_clk_enable_t;
+
+/**
+ * @brief  CPU Clocks and Oscilators structure
+ */
+typedef struct {
+    CLK_SCLKSEL_t    sys_src;
+    CLK_PSADIV_t     psa_div;
+    CLK_PSBCDIV_t    psbc_div;
+
+    OSC_FRQRANGE_t   xosc_freq_range;
+    OSC_XOSCSEL_t    xosc_src;
+    cpu_clk_enable_t xosc_32k_ulp;   /**< Reduce the swing on the TOSC2 pin */
+    cpu_clk_enable_t xosc_ulp;       /**< Reduce the swing on the XTAL2 pin */
+    cpu_clk_enable_t xosc_pin;       /**< Ext. clock pin is port C, pin 4   */
+    cpu_clk_enable_t xosc_en;
+    uint32_t         xosc_freq;      /**< Ext. Oscilator frequency          */
+
+    OSC_RC2MCREF_t   dfll_2M_src;
+    cpu_clk_enable_t dfll_2M_en;
+    OSC_RC32MCREF_t  dfll_32M_src;
+    cpu_clk_enable_t dfll_32M_en;
+
+    uint8_t          int_32k_cal;
+    cpu_clk_enable_t int_32k_en;
+    cpu_clk_enable_t int_2M_en;
+    uint8_t          int_8M_cal;
+    uint8_t          int_8M_ulp;
+    cpu_clk_enable_t int_8M_en;
+    cpu_clk_enable_t int_32M_en;
+    uint32_t         int_32M_freq;   /**< RC32M calibrated frequency        */
+
+    OSC_PLLSRC_t     pll_src;
+    cpu_clk_enable_t pll_div_by2;
+    uint8_t          pll_mul_factor;
+    cpu_clk_enable_t pll_en;
+    uint32_t         pll_freq;       /**< PLL output frequency              */
+
+    CLK_USBPSDIV_t   usb_div;
+    CLK_USBSRC_t     usb_src;
+    cpu_clk_enable_t usb_en;
+} cpu_clk_osc_t;
+/** @} */
+
+/**
  * @brief   Available ports on the ATxmega family
  */
 enum {

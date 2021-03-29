@@ -27,11 +27,6 @@ extern "C" {
 #endif
 
 /**
- * @brief   Clock configuration
- */
-#define CLOCK_CORECLOCK     MHZ(32)
-
-/**
  * @name   Baudrate for STDIO terminal
  *
  * The standard configuration for STDIO in cpu/atxmega/periph/uart.c

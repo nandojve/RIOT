@@ -24,7 +24,8 @@
 
 #include "assert.h"
 #include "periph_conf.h"
-#include "cpu_pm.h"
+#include "cpu_clock.h"
+#include "cpu_ebi.h"
 
 #define ENABLE_DEBUG 0
 #include "debug.h"
@@ -43,6 +44,7 @@ void ebi_init(void)
     uint8_t mode;
     uint8_t sd_ctrl = 0;
     uint8_t i;
+    uint16_t per2_mhz_scale;
 
     /*
      * This is a mandatory configuration. Whowever, to complete disable module
@@ -57,6 +59,9 @@ void ebi_init(void)
     if (ebi_config.addr_bits == 0) {
         return;
     }
+
+    per2_mhz_scale = atxmega_get_per2_hz() / MHZ(1);
+    per2_mhz_scale <<= 1;
 
     /*
      * Set address and control lines as outputs, and active-low control lines
@@ -200,8 +205,10 @@ void ebi_init(void)
     EBI.SDRAMCTRLC = ebi_config.sdram.write_recovery_dly
                    | ebi_config.sdram.exit_self_rfsh_dly
                    | ebi_config.sdram.row_to_column_dly;
-    EBI.REFRESH    = ebi_config.sdram.refresh_period & 0x0FFF;
-    EBI.INITDLY    = ebi_config.sdram.init_dly & 0x3FFF;
+    EBI.REFRESH    = (ebi_config.sdram.refresh_period * per2_mhz_scale)
+                   & 0x0FFF;
+    EBI.INITDLY    = (ebi_config.sdram.init_dly * per2_mhz_scale)
+                   & 0x3FFF;
 
     /* IRQ are disabled here */
     cs = (EBI_CS_t *)&EBI.CS0;

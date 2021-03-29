@@ -30,6 +30,44 @@ extern "C" {
 #include "periph_cpu.h"
 
 /**
+ * @name    Clocks and Oscilators configuration
+ *
+ * The sys_clk = 64MHz
+ *     per4    = 64MHz
+ *     per2    = 64MHz
+ *     per     = 32MHz
+ *     cpu     = 32MHz
+ * @{
+ */
+static const cpu_clk_osc_t clk_osc_config = {
+    .sys_src         = CLK_SCLKSEL_PLL_gc,
+    .psa_div         = CLK_PSADIV_1_gc,
+    .psbc_div        = CLK_PSBCDIV_1_2_gc,
+
+    .xosc_en         = CPU_CLK_OFF,
+
+    .dfll_2M_src     = OSC_RC2MCREF_RC32K_gc,
+    .dfll_2M_en      = CPU_CLK_EN;
+    .dfll_32M_src    = OSC_RC32MCREF_RC32K_gc,
+    .dfll_32M_en     = CPU_CLK_EN;
+
+    .int_32k_en      = CPU_CLK_EN;
+    .int_2M_en       = CPU_CLK_EN;
+    .int_8M_en       = CPU_CLK_OFF;
+    .int_32M_en      = CPU_CLK_EN;
+    .int_32M_freq    = 32000000U,
+
+    .pll_src         = OSC_PLLSRC_RC32M_gc; /* src = 32M / 4 = 8MHz         */
+    .pll_div_by2     = CPU_CLK_OFF;
+    .pll_mul_factor  = 8;
+    .pll_en          = CPU_CLK_EN;          /* pll_clk = 8 * 8 = 64MHz      */
+    .pll_freq        = 64000000U,
+
+    .usb_en          = CPU_CLK_OFF;
+};
+/** @} */
+
+/**
  * @name    Timer peripheral configuration
  * @{
  */

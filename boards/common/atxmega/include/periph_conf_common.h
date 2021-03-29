@@ -31,7 +31,7 @@ extern "C" {
  * @{
  */
 #ifndef CLOCK_CORECLOCK
-#define CLOCK_CORECLOCK     MHZ(32)
+#define CLOCK_CORECLOCK     atxmega_get_cpu_hz()
 #endif /* CLOCK_CORECLOCK */
 /** @} */
 
