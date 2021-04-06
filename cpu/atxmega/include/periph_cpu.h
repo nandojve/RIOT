@@ -239,6 +239,20 @@ typedef struct {
     cpu_int_lvl_t int_lvl[TIMER_CH_MAX_NUMOF];  /**< Interrupt channels level */
 } timer_conf_t;
 
+/**
+ * @brief   A low-level EEPROM api is provided
+ * @{
+ */
+#define PERIPH_EEPROM_PROVIDES_RW_BYTE
+#define PERIPH_EEPROM_PROVIDES_SET_CLEAR
+#define PERIPH_EEPROM_PROVIDES_ERASE_CHIP
+
+/**
+ * @brief   EEPROM clear byte
+ */
+#define EEPROM_CLEAR_BYTE     (0xff)
+/** @} */
+
 #ifdef __cplusplus
 }
 #endif

@@ -28,6 +28,7 @@
 
 #include "periph/eeprom.h"
 
+#ifndef PERIPH_EEPROM_PROVIDES_RW_BYTE
 uint8_t eeprom_read_byte(uint32_t pos)
 {
     uint8_t byte;
@@ -39,7 +40,9 @@ void eeprom_write_byte(uint32_t pos, uint8_t byte)
 {
     eeprom_write(pos, &byte, 1);
 }
+#endif
 
+#ifndef PERIPH_EEPROM_PROVIDES_SET_CLEAR
 size_t eeprom_set(uint32_t pos, uint8_t val, size_t len)
 {
     assert(pos + len <= EEPROM_SIZE);
@@ -55,9 +58,13 @@ size_t eeprom_clear(uint32_t pos, size_t len)
 {
     return eeprom_set(pos, EEPROM_CLEAR_BYTE, len);
 }
+#endif
 
+#ifndef PERIPH_EEPROM_PROVIDES_ERASE_CHIP
 size_t eeprom_erase(void)
 {
     return eeprom_clear(0, EEPROM_SIZE);
 }
+#endif
+
 #endif
